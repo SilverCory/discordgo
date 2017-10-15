@@ -316,9 +316,23 @@ type Presence struct {
 
 // A Game struct holds the name of the "playing .." game for a user
 type Game struct {
-	Name string `json:"name"`
-	Type int    `json:"type"`
-	URL  string `json:"url,omitempty"`
+	Name       string `json:"name"`
+	Type       int    `json:"type"`
+	URL        string `json:"url,omitempty"`
+	Details    string `json:"details,omitempty"`
+	State      string `json:"state,omitempty"`
+	TimeStamps struct {
+		EndTimestamp   uint `json:"end,omitempty"`
+		StartTimestamp uint `json:"start,omitempty"`
+	} `json:"timestamps,omitempty"`
+
+	Assets struct {
+		LargeImageID string `json:"large_image,omitempty"`
+		SmallImageID string `json:"small_image,omitempty"`
+		LargeText    string `json:"large_text,omitempty"`
+	} `json:"assets,omitempty"`
+
+	ApplicationID string `json:"application_id,omitempty"`
 }
 
 // UnmarshalJSON unmarshals json to Game struct
