@@ -266,6 +266,38 @@ type updateStatusOp struct {
 // If game!="" then set game.
 // If game!="" and url!="" then set the status type to streaming with the URL set.
 // if otherwise, set status to active, and no game.
+func (s *Session) UpdateStatusRaw(idle int, game *Game) (err error) {
+
+	s.log(LogInformational, "called")
+
+	s.RLock()
+	defer s.RUnlock()
+	if s.wsConn == nil {
+		return ErrWSNotFound
+	}
+
+	usd := updateStatusData{
+		Status: "online",
+	}
+
+	if idle > 0 {
+		usd.IdleSince = &idle
+	}
+
+	usd.Game = game
+
+	s.wsMutex.Lock()
+	err = s.wsConn.WriteJSON(updateStatusOp{3, usd})
+	s.wsMutex.Unlock()
+
+	return
+}
+
+// UpdateStreamingStatus is used to update the user's streaming status.
+// If idle>0 then set status to idle.
+// If game!="" then set game.
+// If game!="" and url!="" then set the status type to streaming with the URL set.
+// if otherwise, set status to active, and no game.
 func (s *Session) UpdateStreamingStatus(idle int, game string, url string) (err error) {
 
 	s.log(LogInformational, "called")
