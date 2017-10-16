@@ -261,10 +261,11 @@ type updateStatusOp struct {
 	Data updateStatusData `json:"d"`
 }
 
-// UpdateStreamingStatus is used to update the user's streaming status.
+// UpdateStreamingStatus is used to update the user's status.
+// With Raw you can supply a pointer to the game instance,
+// allowing for rich presence to be pushed and tested.
 // If idle>0 then set status to idle.
-// If game!="" then set game.
-// If game!="" and url!="" then set the status type to streaming with the URL set.
+// If game != nil set game
 // if otherwise, set status to active, and no game.
 func (s *Session) UpdateStatusRaw(idle int, game *Game) (err error) {
 
@@ -284,7 +285,9 @@ func (s *Session) UpdateStatusRaw(idle int, game *Game) (err error) {
 		usd.IdleSince = &idle
 	}
 
-	usd.Game = game
+	if game != nil {
+		usd.Game = game
+	}
 
 	s.wsMutex.Lock()
 	err = s.wsConn.WriteJSON(updateStatusOp{3, usd})
