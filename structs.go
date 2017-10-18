@@ -323,6 +323,7 @@ type Assets struct {
 	LargeImageID string `json:"large_image,omitempty"`
 	SmallImageID string `json:"small_image,omitempty"`
 	LargeText    string `json:"large_text,omitempty"`
+	SmallText    string `json:"small_text,omitempty"`
 }
 
 // A Game struct holds the name of the "playing .." game for a user
@@ -335,6 +336,7 @@ type Game struct {
 	TimeStamps    TimeStamps `json:"timestamps,omitempty"`
 	Assets        Assets     `json:"assets,omitempty"`
 	ApplicationID string     `json:"application_id,omitempty"`
+	Instance      int8       `json:"instance,omitempty"`
 }
 
 // UnmarshalJSON unmarshals json to Game struct
